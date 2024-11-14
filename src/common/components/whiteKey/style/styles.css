@@ -2,6 +2,7 @@
   display: flex;
   width: 14.2857%;
   height: 100%;  /* Full height of the key group */
+  background: linear-gradient(220deg, gray 1%, white 99%);
   box-sizing: border-box;
   border-top: 2px solid black;
   border-bottom: none;

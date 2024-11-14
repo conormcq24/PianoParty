@@ -1,12 +1,12 @@
 import React from 'react';
 import BlackKey from '../BlackKey/index';
-import WhiteKey from '../WhiteKey/index';  // Import the WhiteKey component
+import WhiteKey from '../WhiteKey/index';
 import './style/styles.css';
 
 const WhiteKeyGroup = (props) => {
-  const keyCount = 7;  // There are 7 white keys per group (A-G)
+  const keyCount = 7;  /* There are 7 white keys per group (A-G) */
 
-  // Calculate the octave for each white key
+  /* calculate octave and note for white keys */
   const getWhiteKeyOctave = (index, octave) => {
     const numNoteMap = [
       { note: "A", num: 0 },
@@ -18,21 +18,41 @@ const WhiteKeyGroup = (props) => {
       { note: "G", num: 6 },
     ];
 
-    // For indices less than 2, return the note with the current octave
+    /* for indexes less than two use octave */
     if (index < 2) {
       return `${numNoteMap[index].note}${octave}`; // e.g., "A3" or "B3"
     }
 
-    // For indices 2 or greater, return the note with octave + 1
+    /* for indexes greater than two use octave + 1 */
     return `${numNoteMap[index].note}${octave + 1}`; // e.g., "C4" or "D4"
   };
 
-  // Determine the opacity for black keys based on the hideAllButFirstBlackKey prop
+  /* calculate octave and note for white keys */
+  const getBlackKeyOctave = (index, octave) => {
+      const numNoteMap = [
+        { note: "A#", num: 0 },
+        { note: "B#", num: 1 },
+        { note: "C#", num: 2 },
+        { note: "D#", num: 3 },
+        { note: "E#", num: 4 },
+        { note: "F#", num: 5 },
+        { note: "G#", num: 6 },
+      ];
+
+      /* for indexes less than two use octave */
+      if (index < 2) {
+        return `${numNoteMap[index].note}${octave}`; // e.g., "A3" or "B3"
+      }
+
+      /* for indexes greater than two use octave + 1 */
+      return `${numNoteMap[index].note}${octave + 1}`; // e.g., "C4" or "D4"
+  };
+  /* we generate 7 black keys per group but only 5 should be visible, this logic dictates which to hide */
   const getBlackKeyStyle = (index) => {
     if (props.hideAllButFirstBlackKey) {
-      return index === 0 ? {} : { opacity: 0 };  // Only show the first black key
+      return index === 0 ? {} : { opacity: 0 };
     }
-    return index === 1 || index === 4 ? { opacity: 0 } : {};  // Hide 2nd and 5th black keys by default
+    return index === 1 || index === 4 ? { opacity: 0 } : {};
   };
 
   return (
@@ -50,7 +70,9 @@ const WhiteKeyGroup = (props) => {
         {Array.from({ length: keyCount }).map((_, index) => (
           <BlackKey
             key={index}
-            style={getBlackKeyStyle(index)}  // Apply styles for black keys
+            style={getBlackKeyStyle(index)}
+            activeKeys={props.activeKeys}
+            noteOctave={getBlackKeyOctave(index, props.octave)}
           />
         ))}
       </div>
