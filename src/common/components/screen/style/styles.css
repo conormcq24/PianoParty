@@ -1,0 +1,8 @@
+.screen{
+    height: 82%;
+    width: 100%;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

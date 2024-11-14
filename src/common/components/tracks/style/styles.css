@@ -1,0 +1,7 @@
+.tracks{
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;  /* Include padding and borders in element's width/height */
+}

@@ -1,0 +1,13 @@
+.black-key-space {
+    display: flex;
+    width: 14.2857%;
+    height: 100%;  /* Full height of the key group */
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+.black-key{
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(220deg, black 1%, #232323 99%);
+}

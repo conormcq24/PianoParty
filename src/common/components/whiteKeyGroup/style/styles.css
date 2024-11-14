@@ -1,0 +1,19 @@
+.white-key-group {
+  display: flex;
+  width: 13.4625%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.white-key-group.last-group {
+    border-right: none;
+}
+
+.black-key-group{
+    display: flex;
+    width: 100%;
+    height: 65%;
+    position: absolute;
+    margin-left: 6.73125%;
+    z-index: 1;
+}

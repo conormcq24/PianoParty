@@ -1,0 +1,5 @@
+.white-keys {
+  width: 107.7%;  /* The parent container takes up 100% width */
+  height: 30%;  /* Adjust the height as needed */
+  display: flex;  /* Flexbox to arrange key groups in a row */
+}

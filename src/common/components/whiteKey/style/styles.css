@@ -1,0 +1,19 @@
+.white-key {
+  display: flex;
+  width: 14.2857%;
+  height: 100%;  /* Full height of the key group */
+  box-sizing: border-box;
+  border-top: 2px solid black;
+  border-bottom: none;
+  border-left: none;
+  border-right: 2px solid black;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: center;
+  font-size: 9px;
+}
+
+.white-key:last-child {
+  border-right: none;  /* No border on the right of the last white key */
+}
+
