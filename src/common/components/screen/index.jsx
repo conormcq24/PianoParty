@@ -7,7 +7,13 @@ const Screen = (props) => {
         <>
             <div className="screen">
                 <Tracks />
-                <WhiteKeys activeKeys={props.activeKeys}/>
+                <WhiteKeys
+                    activeKeys={props.activeKeys}
+                    whiteKeyShadow={props.whiteKeyShadow}
+                    whiteKeyColor={props.whiteKeyColor}
+                    whiteKeyColorPressed={props.whiteKeyColorPressed}
+                    whiteKeyNoteMarker={props.whiteKeyNoteMarker}
+                />
             </div>
         </>
     );

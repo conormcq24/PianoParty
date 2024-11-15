@@ -7,9 +7,11 @@ html {
     padding: 0;
     height: 100%;
     width: 100%;
-    min-height: 480px;
-    min-width: 640px;
+    min-height: 786px;
+    min-width: 1024px;
     overflow: hidden;
+    overflow-y: auto;
+    user-select: none;
 }
 
 body {

@@ -4,7 +4,7 @@ import './style/styles.css';
 
 const WhiteKeys = (props) => {
   const whiteKeyGroupCount = 8;  // Total of 8 KeyGroups
-
+  console.log("WHITE KEYS LEVEL", props.whiteKeyShadow)
   return (
     <div className="white-keys">
       {Array.from({ length: whiteKeyGroupCount }).map((_, index) => (
@@ -13,6 +13,10 @@ const WhiteKeys = (props) => {
           octave={index}
           activeKeys={props.activeKeys}
           hideAllButFirstBlackKey={index === 7}
+          whiteKeyShadow={props.whiteKeyShadow}
+          whiteKeyNoteMarker={props.whiteKeyNoteMarker}
+          whiteKeyColor={props.whiteKeyColor}
+          whiteKeyColorPressed={props.whiteKeyColorPressed}
           /*
              passes true on index 7,
              on an actual keyboard the 8th group only has 3 white keys

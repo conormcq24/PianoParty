@@ -12,6 +12,7 @@
   align-items: flex-end;
   text-align: center;
   font-size: 9px;
+  color: black;
 }
 
 .white-key:last-child {

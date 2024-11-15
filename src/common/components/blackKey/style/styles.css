@@ -5,6 +5,9 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    border-top: solid;
+    border-top-style: solid;
+    border-width: 2px;
 }
 .black-key{
     width: 60%;

@@ -3,6 +3,38 @@
     width: 100%;
     background-color: #232323;
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.control-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 80%;
+    width: auto;
+    aspect-ratio: .8;
+    color: white;
+    border-radius: 10px;
+    margin-left: 1rem;
+}
+.control-top{
+    width: 100%;
+    height: 65%;
+    display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 2rem;
+}
+.control-bottom{
+    width: 100%;
+    height: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.hoverable-item:hover{
+    color: palegreen;
 }
