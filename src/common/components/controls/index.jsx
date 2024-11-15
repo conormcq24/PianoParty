@@ -1,7 +1,8 @@
 import React from 'react';
+import VideoSlider from '../videoSlider/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faToggleOn, faToggleOff, faFilm } from '@fortawesome/free-solid-svg-icons';
-import { faPianoKeyboard } from  '@fortawesome/pro-solid-svg-icons'
+import { faToggleOn, faToggleOff, faFilm, faBackwardStep, faPlay, faForwardStep } from '@fortawesome/free-solid-svg-icons';
+import { faPiano, faRecordVinyl, faMusicMagnifyingGlass } from  '@fortawesome/pro-solid-svg-icons'
 import './style/styles.css';
 
 
@@ -12,7 +13,7 @@ const Controls = (props) => {
             <div className="controls">
                 <div className="control-item">
                     <div className="control-top">
-                        <FontAwesomeIcon icon={faPianoKeyboard} />
+                        <FontAwesomeIcon icon={faPiano} />
                     </div>
                     <div className="control-bottom">
                         { props.pianoConnected && (
@@ -24,15 +25,42 @@ const Controls = (props) => {
                     </div>
                 </div>
                 <div className="control-item">
-                    <div className="control-top hoverable-item">
+                    <div className="control-top hoverable-item-red">
+                        <FontAwesomeIcon icon={faRecordVinyl} />
+                    </div>
+                    <div className="control-bottom">
+                        <FontAwesomeIcon icon={faToggleOn} style={{color: 'palegreen'}}/>
+                    </div>
+                </div>
+                <div className="control-item">
+                    <div className="control-top hoverable-item-green">
                         <FontAwesomeIcon icon={faFilm} />
                     </div>
                 </div>
                 <div className="control-item">
+                    <div className="control-top hoverable-item-red">
+                        <FontAwesomeIcon icon={faBackwardStep} />
+                    </div>
                 </div>
                 <div className="control-item">
+                    <div className="control-top hoverable-item-red">
+                        <FontAwesomeIcon icon={faMusicMagnifyingGlass} />
+                    </div>
+                </div>
+                <div className="long-control-item">
+                    <div className="control-top">
+                        <VideoSlider />
+                    </div>
                 </div>
                 <div className="control-item">
+                    <div className="control-top hoverable-item-red">
+                        <FontAwesomeIcon icon={faPlay} />
+                    </div>
+                </div>
+                <div className="control-item">
+                    <div className="control-top hoverable-item-red">
+                        <FontAwesomeIcon icon={faForwardStep} />
+                    </div>
                 </div>
             </div>
         </>

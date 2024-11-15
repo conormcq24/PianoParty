@@ -37,9 +37,6 @@ const ScreenContainer = (props) => {
     setShowSettings(prevState => !prevState);
   };
 
-
-
-  console.log("MAIN LEVEL", whiteKeyShadow);
   useEffect(() => {
     /* Check if WebMidi is supported by the browser */
     if (navigator.requestMIDIAccess) {

@@ -4,7 +4,6 @@ import './style/styles.css';
 
 const WhiteKeys = (props) => {
   const whiteKeyGroupCount = 8;  // Total of 8 KeyGroups
-  console.log("WHITE KEYS LEVEL", props.whiteKeyShadow)
   return (
     <div className="white-keys">
       {Array.from({ length: whiteKeyGroupCount }).map((_, index) => (
