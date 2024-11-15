@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { WebMidi } from 'webmidi';
+import { playSound, stopSound } from '../../context/noteActivityContext/util/soundHandler.js';
 
 /* components */
 import Navbar from '../../components/navbar/index';
@@ -8,37 +9,19 @@ import Controls from '../../components/controls/index';
 import Settings from '../../components/settings/index';
 import MusicScreen from '../../components/musicScreen/index';
 
-/* this holds information related to notes like their sounds and activity */
-import noteActivityData from './util/noteActivityData';
+/* Context */
+import { NoteActivityContext } from '../../context/noteActivityContext/noteActivityContext';
+import { ControlContext } from '../../context/controlContext/controlContext';
 
 import './style/styles.css';
 
 const ScreenContainer = (props) => {
-  /* main state */
-  const [noteActivity, setNoteActivity] = useState(noteActivityData);
-  const [showSettings, setShowSettings] = useState(false);
-  const [pianoConnected, setPianoConnected] = useState(false);
-
-  /* white key settings */
-  const [whiteKeyShadow, setWhiteKeyShadow] = useState(true);
-  const [whiteKeyNoteMarker, setWhiteKeyNoteMarker] = useState(true);
-  const [whiteKeyColor, setWhiteKeyColor] = useState("#FFFFFF");
-  const [whiteKeyColorPressed, setWhiteKeyColorPressed] = useState("palegreen");
-
-  const toggleWhiteKeyShadow = () => {
-    setWhiteKeyShadow(prevShadow => !prevShadow);
-  };
-
-  const toggleWhiteNoteMarker = () => {
-    setWhiteKeyNoteMarker(prevNoteMarker => !prevNoteMarker);
-  };
-
-  const toggleSettings = () => {
-    setShowSettings(prevState => !prevState);
-  };
+  /* Access noteActivity and setNoteActivity from the NoteActivityContext */
+  const { noteActivity, setNoteActivity } = useContext(NoteActivityContext);
+  /* Access control context */
+  const { pianoConnected, setPianoConnected, mute } = useContext(ControlContext);
 
   useEffect(() => {
-    /* Check if WebMidi is supported by the browser */
     if (navigator.requestMIDIAccess) {
       WebMidi.enable((err) => {
         if (err) {
@@ -46,40 +29,51 @@ const ScreenContainer = (props) => {
         } else {
           console.log("Connected MIDI devices:", WebMidi.inputs);
 
-          /* Set initial state based on connected MIDI devices */
+          // Set initial state based on connected MIDI devices
           setPianoConnected(WebMidi.inputs.length > 0);
 
-          /* Add listeners for key presses and releases on each MIDI input device */
           WebMidi.inputs.forEach((input) => {
+            // Remove existing listeners before adding new ones to avoid duplicates
+            input.removeListener('noteon', "all");
+            input.removeListener('noteoff', "all");
+
+            // Add listeners for key presses and releases
             input.addListener('noteon', "all", (e) => {
               const noteName = `${e.note.name}${e.note.accidental || ""}${e.note.octave}`;
               const noteData = noteActivity.find((note) => note.note === noteName);
               if (noteData) {
-                setNoteActivity(prevActivity =>
+                setNoteActivity((prevActivity) =>
                   prevActivity.map((noteObj) =>
                     noteObj.note === noteName ? { ...noteObj, isActive: true } : noteObj
                   )
                 );
+
+                if (!mute) {
+                  playSound(noteName, true, noteData.frequency, mute);
+                  console.log("MUTE IS OFF IN SCREENCONTAINER: PLAY NOTE");
+                } else {
+                  console.log("MUTE IS ON IN SCREENCONTAINER: DONT PLAY NOTE");
+                }
               }
             });
 
             input.addListener('noteoff', "all", (e) => {
               const noteName = `${e.note.name}${e.note.accidental || ""}${e.note.octave}`;
-              setNoteActivity(prevActivity =>
+              setNoteActivity((prevActivity) =>
                 prevActivity.map((noteObj) =>
                   noteObj.note === noteName ? { ...noteObj, isActive: false } : noteObj
                 )
               );
+              stopSound(noteName); // Stop the sound when the note is released
             });
           });
 
-          /* Listen for connections */
+          // Listen for connections and disconnections
           WebMidi.addListener('connected', (e) => {
             console.log("MIDI device connected:", e.port.name);
             setPianoConnected(true);
           });
 
-          /* Listen for disconnections */
           WebMidi.addListener('disconnected', (e) => {
             console.log("MIDI device disconnected:", e.port.name);
             setPianoConnected(false);
@@ -103,36 +97,18 @@ const ScreenContainer = (props) => {
           input.removeListener('noteoff', "all");
         });
       };
-
     } else {
       console.error("WebMidi is not supported on this browser.");
     }
-  },
-  /* if these variables are changed, trigger useEffect logic */
-  [pianoConnected, noteActivity]);
+  }, [pianoConnected, noteActivity, setNoteActivity, mute]);
+
 
   return (
     <>
-      <Navbar toggleSettings={toggleSettings} />
-      <Screen
-        activeKeys={noteActivity}
-        whiteKeyShadow={whiteKeyShadow}
-        whiteKeyNoteMarker={whiteKeyNoteMarker}
-        whiteKeyColor={whiteKeyColor}
-        whiteKeyColorPressed={whiteKeyColorPressed}
-      />
-      <Controls pianoConnected={pianoConnected} />
-      <Settings
-        showSettings={showSettings}
-        setWhiteKeyShadow={setWhiteKeyShadow}
-        setWhiteKeyColor={setWhiteKeyColor}
-        setWhiteKeyColorPressed={setWhiteKeyColorPressed}
-        setWhiteKeyNoteMarker={setWhiteKeyNoteMarker}
-        whiteKeyShadow={whiteKeyShadow}
-        whiteKeyColor={whiteKeyColor}
-        whiteKeyColorPressed={whiteKeyColorPressed}
-        whiteKeyNoteMarker={whiteKeyNoteMarker}
-      />
+      <Navbar />
+      <Screen activeKeys={noteActivity} />
+      <Controls />
+      <Settings />
       <MusicScreen showMusicScreen={false} />
     </>
   );

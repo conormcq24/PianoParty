@@ -91,4 +91,6 @@ const noteActivityData = [
   { note: "C8", isActive: false, frequency: 4186.01 },
 ];
 
+
+
 export default noteActivityData;

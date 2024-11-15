@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { SettingsContext } from '../../context/settingsContext/settingsContext';
 import VisualPref from '../visualPref/index';
 import AudioPref from '../audioPref/index';
 import VideoPref from '../videoPref/index';
@@ -9,15 +10,19 @@ const Settings = (props) => {
   /* track state of the active menu item in settings */
   const [activeSetting, setActiveSetting] = useState("Visual Preferences");
 
+  const {
+      showSettings
+    } = useContext(SettingsContext);
+
   /*
     reset to default selection of visual preferences
     when settings menu is closed
   */
   useEffect(() => {
-    if (!props.showSettings) {
+    if (!showSettings) {
       setActiveSetting("Visual Preferences");
     }
-  }, [props.showSettings]);
+  }, [showSettings]);
 
   /* handle setting menu item selection */
   const handleSettingClick = (setting) => {
@@ -26,7 +31,7 @@ const Settings = (props) => {
 
   return (
     <>
-      {props.showSettings && (
+      {showSettings && (
         <div className="settings">
           <div className="settings-menu">
             <div className="settings-list">
@@ -60,16 +65,7 @@ const Settings = (props) => {
             <div className="settings-detail-box">
                 {activeSetting === "Visual Preferences" && (
                   <>
-                    <VisualPref
-                        setWhiteKeyShadow={props.setWhiteKeyShadow}
-                        setWhiteKeyColor={props.setWhiteKeyColor}
-                        setWhiteKeyColorPressed={props.setWhiteKeyColorPressed}
-                        setWhiteKeyNoteMarker={props.setWhiteKeyNoteMarker}
-                        whiteKeyShadow={props.whiteKeyShadow}
-                        whiteKeyColor={props.whiteKeyColor}
-                        whiteKeyColorPressed={props.whiteKeyColorPressed}
-                        whiteKeyNoteMarker={props.whiteKeyNoteMarker}
-                    />
+                    <VisualPref />
                   </>
                 )}
                 {activeSetting === "Audio Preferences" && (

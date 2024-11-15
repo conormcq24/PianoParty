@@ -10,11 +10,6 @@ const WhiteKeys = (props) => {
         <WhiteKeyGroup
           key={index}
           octave={index}
-          activeKeys={props.activeKeys}
-          whiteKeyShadow={props.whiteKeyShadow}
-          whiteKeyNoteMarker={props.whiteKeyNoteMarker}
-          whiteKeyColor={props.whiteKeyColor}
-          whiteKeyColorPressed={props.whiteKeyColorPressed}
           /*
              passes true on index 7,
              on an actual keyboard the 8th group only has 3 white keys

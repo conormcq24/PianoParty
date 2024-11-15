@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import VideoSlider from '../videoSlider/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToggleOn, faToggleOff, faFilm, faBackwardStep, faPlay, faForwardStep } from '@fortawesome/free-solid-svg-icons';
-import { faPiano, faRecordVinyl, faMusicMagnifyingGlass } from  '@fortawesome/pro-solid-svg-icons'
+import { faPiano, faRecordVinyl, faMusicMagnifyingGlass, faVolume } from  '@fortawesome/pro-solid-svg-icons';
+import { ControlContext } from '../../context/controlContext/controlContext';
 import './style/styles.css';
 
 
 
 const Controls = (props) => {
+
+    /* Access isPianoConnected with controlContext */
+    const { pianoConnected, toggleMute, mute } = useContext(ControlContext);
+
     return (
         <>
             <div className="controls">
@@ -16,10 +21,10 @@ const Controls = (props) => {
                         <FontAwesomeIcon icon={faPiano} />
                     </div>
                     <div className="control-bottom">
-                        { props.pianoConnected && (
+                        { pianoConnected && (
                             <FontAwesomeIcon icon={faToggleOn} style={{color: 'palegreen'}}/>
                         )}
-                        { !props.pianoConnected && (
+                        { !pianoConnected && (
                             <FontAwesomeIcon icon={faToggleOff} style={{color: 'tomato'}}/>
                         )}
                     </div>
@@ -30,6 +35,19 @@ const Controls = (props) => {
                     </div>
                     <div className="control-bottom">
                         <FontAwesomeIcon icon={faToggleOn} style={{color: 'palegreen'}}/>
+                    </div>
+                </div>
+                <div className="control-item">
+                    <div className="control-top hoverable-item-red">
+                        <FontAwesomeIcon icon={faVolume} onClick={toggleMute}/>
+                    </div>
+                    <div className="control-bottom">
+                        { !mute && (
+                            <FontAwesomeIcon icon={faToggleOn} style={{color: 'palegreen'}}/>
+                        )}
+                        { mute && (
+                            <FontAwesomeIcon icon={faToggleOff} style={{color: 'tomato'}}/>
+                        )}
                     </div>
                 </div>
                 <div className="control-item">

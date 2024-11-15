@@ -61,12 +61,7 @@ const WhiteKeyGroup = (props) => {
       {Array.from({ length: keyCount }).map((_, index) => (
         <WhiteKey
           key={index}
-          activeKeys={props.activeKeys}
           noteOctave={getWhiteKeyOctave(index, props.octave)}  // Pass the correct octave and note
-          whiteKeyShadow={props.whiteKeyShadow}
-          whiteKeyNoteMarker={props.whiteKeyNoteMarker}
-          whiteKeyColor={props.whiteKeyColor}
-          whiteKeyColorPressed={props.whiteKeyColorPressed}
         />
       ))}
       <div className="black-key-group">

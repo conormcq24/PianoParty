@@ -1,47 +1,63 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { HexColorPicker } from 'react-colorful';
-import WhiteKey from '../whiteKey/index';
-import './style/styles.css';
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { HexColorPicker } from "react-colorful";
+import WhiteKey from "../whiteKey/index";
+import { SettingsContext } from "../../context/settingsContext/settingsContext";
+import "./style/styles.css";
 
 const VisualPref = (props) => {
-    /* state variables for basic on/off settings */
-    const [whiteKeyShadow, setWhiteKeyShadow] = useState(props.whiteKeyShadow);
-    const [whiteKeyNoteMarker, setIsNoteMarkerOn] = useState(props.whiteKeyNoteMarker);
+    // Access global settings from the context
+    const {
+        whiteKeyShadow: globalWhiteKeyShadow,
+        setWhiteKeyShadow: setGlobalWhiteKeyShadow,
+        whiteKeyNoteMarker: globalWhiteKeyNoteMarker,
+        setWhiteKeyNoteMarker: setGlobalWhiteKeyNoteMarker,
+        whiteKeyColor: globalWhiteKeyColor,
+        setWhiteKeyColor: setGlobalWhiteKeyColor,
+        whiteKeyColorPressed: globalWhiteKeyColorPressed,
+        setWhiteKeyColorPressed: setGlobalWhiteKeyColorPressed,
+    } = useContext(SettingsContext);
 
-    /* toggle functions for basic on/off states */
-    const toggleShadow = () => setWhiteKeyShadow(prev => !prev);
-    const toggleNoteMarker = () => setIsNoteMarkerOn(prev => !prev);
-
-    /* common state for color pickers */
+    // Local state for immediate changes in the settings menu
+    const [whiteKeyShadow, setWhiteKeyShadow] = useState(globalWhiteKeyShadow);
+    const [whiteKeyNoteMarker, setWhiteKeyNoteMarker] = useState(globalWhiteKeyNoteMarker);
     const [colors, setColors] = useState({
-        on: props.whiteKeyColorPressed,
-        off: props.whiteKeyColor,
+        off: globalWhiteKeyColor,
+        on: globalWhiteKeyColorPressed,
     });
 
     const [visiblePicker, setVisiblePicker] = useState(null); // Can be 'on' or 'off'
     const pickerRef = useRef(null);
 
-    // Function to handle color change for both on and off colors
+    // Toggle functions for shadow and note marker
+    const toggleShadow = () => {
+      const newValue = !whiteKeyShadow;
+      setWhiteKeyShadow(newValue);
+    };
+
+    const toggleNoteMarker = () => setWhiteKeyNoteMarker((prev) => !prev);
+
+    // Handle color change
     const handleColorChange = (colorType, newColor) => {
-        setColors(prev => ({
+        setColors((prev) => ({
             ...prev,
-            [colorType]: newColor
+            [colorType]: newColor,
         }));
     };
 
     const togglePicker = (colorType) => {
-        setVisiblePicker(prev => prev === colorType ? null : colorType); // Toggle picker visibility
+        setVisiblePicker((prev) => (prev === colorType ? null : colorType)); // Toggle picker visibility
     };
 
     const confirmColorChange = () => {
         setVisiblePicker(null); // Close picker after confirmation
     };
 
+    // Apply local settings to global context
     const handleWhiteKeySettingsSave = () => {
-            props.setWhiteKeyShadow(whiteKeyShadow);
-            props.setWhiteKeyColor(colors.off);
-            props.setWhiteKeyColorPressed(colors.on);
-            props.setWhiteKeyNoteMarker(whiteKeyNoteMarker);
+        setGlobalWhiteKeyShadow(whiteKeyShadow);
+        setGlobalWhiteKeyColor(colors.off);
+        setGlobalWhiteKeyColorPressed(colors.on);
+        setGlobalWhiteKeyNoteMarker(whiteKeyNoteMarker);
     };
 
     // Close the color picker if clicked outside
@@ -52,10 +68,10 @@ const VisualPref = (props) => {
             }
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
 
@@ -76,13 +92,13 @@ const VisualPref = (props) => {
                                 noteOctave={"A0"}
                                 whiteKeyShadow={whiteKeyShadow}
                                 whiteKeyNoteMarker={whiteKeyNoteMarker}
-                                whiteKeyColor={colors.off} // Use the offColor from state
+                                whiteKeyColor={colors.off} // Local state
                             />
                             <WhiteKey
                                 noteOctave={"A1"}
                                 whiteKeyShadow={whiteKeyShadow}
                                 whiteKeyNoteMarker={whiteKeyNoteMarker}
-                                whiteKeyColorPressed={colors.on} // Use the offColor from state
+                                whiteKeyColorPressed={colors.on} // Local state
                                 isExampleOn={true}
                             />
                         </div>
@@ -95,7 +111,7 @@ const VisualPref = (props) => {
                         </div>
                         <div className="settings-group-item-body">
                             <div
-                                className={`toggle-button ${whiteKeyShadow ? 'on-button' : 'off-button'} dongle-regular`}
+                                className={`toggle-button ${whiteKeyShadow ? "on-button" : "off-button"} dongle-regular`}
                                 onClick={toggleShadow}
                             >
                                 {whiteKeyShadow ? "ON" : "OFF"}
@@ -111,14 +127,14 @@ const VisualPref = (props) => {
                         <div className="settings-group-item-body">
                             <div
                                 className="settings-group-color-picker"
-                                onClick={() => togglePicker('off')}
+                                onClick={() => togglePicker("off")}
                                 style={{ backgroundColor: colors.off }}
                             />
-                            {visiblePicker === 'off' && (
-                                <div ref={pickerRef} style={{ marginTop: '10px' }}>
+                            {visiblePicker === "off" && (
+                                <div ref={pickerRef} style={{ marginTop: "10px" }}>
                                     <HexColorPicker
                                         color={colors.off}
-                                        onChange={(color) => handleColorChange('off', color)}
+                                        onChange={(color) => handleColorChange("off", color)}
                                     />
                                     <button onClick={confirmColorChange}>Confirm</button>
                                 </div>
@@ -134,14 +150,14 @@ const VisualPref = (props) => {
                         <div className="settings-group-item-body">
                             <div
                                 className="settings-group-color-picker"
-                                onClick={() => togglePicker('on')}
+                                onClick={() => togglePicker("on")}
                                 style={{ backgroundColor: colors.on }}
                             />
-                            {visiblePicker === 'on' && (
-                                <div ref={pickerRef} style={{ marginTop: '10px' }}>
+                            {visiblePicker === "on" && (
+                                <div ref={pickerRef} style={{ marginTop: "10px" }}>
                                     <HexColorPicker
                                         color={colors.on}
-                                        onChange={(color) => handleColorChange('on', color)}
+                                        onChange={(color) => handleColorChange("on", color)}
                                     />
                                     <button onClick={confirmColorChange}>Confirm</button>
                                 </div>
@@ -156,7 +172,7 @@ const VisualPref = (props) => {
                         </div>
                         <div className="settings-group-item-body">
                             <div
-                                className={`toggle-button ${whiteKeyNoteMarker ? 'on-button' : 'off-button'} dongle-regular`}
+                                className={`toggle-button ${whiteKeyNoteMarker ? "on-button" : "off-button"} dongle-regular`}
                                 onClick={toggleNoteMarker}
                             >
                                 {whiteKeyNoteMarker ? "ON" : "OFF"}

@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { SettingsContext } from '../../context/settingsContext/settingsContext';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import './style/styles.css';
 
 const Navbar = (props) => {
-    /* props.toggleSettings */
+    const {
+        toggleSettings
+      } = useContext(SettingsContext);
+
     return (
         <>
             <div className="navbar">
@@ -12,7 +16,7 @@ const Navbar = (props) => {
                     <h1>Piano Party</h1>
                 </div>
                 <div className="navbar-settings">
-                    <FontAwesomeIcon className="hoverable-item" icon={faGear} onClick={props.toggleSettings}/>
+                    <FontAwesomeIcon className="hoverable-item" icon={faGear} onClick={toggleSettings}/>
                 </div>
             </div>
         </>
