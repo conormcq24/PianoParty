@@ -11,7 +11,6 @@ const WhiteKeys = (props) => {
           key={index}
           octave={index}
           activeKeys={props.activeKeys}
-          hideAllButFirstBlackKey={index === 7}
           whiteKeyShadow={props.whiteKeyShadow}
           whiteKeyNoteMarker={props.whiteKeyNoteMarker}
           whiteKeyColor={props.whiteKeyColor}
@@ -22,6 +21,7 @@ const WhiteKeys = (props) => {
              and one black key. because of this we need to hide all but
              the first black key on our last black key group
           */
+          hideAllButFirstBlackKey={index === 7}
         />
       ))}
     </div>
