@@ -17,7 +17,7 @@ const WhiteKey = (props) => {
   const { noteActivity } = useContext(NoteActivityContext);  // Access note activity from context
 
   /*
-    Use props if provided, otherwise fall back to context
+    Use props if provided, otherwise fall back to context (props are used in settings preview, context controls actual keyboard)
   */
   const defaultWhiteKeyShadow = props.whiteKeyShadow !== undefined ? props.whiteKeyShadow : globalWhiteKeyShadow;
   const defaultWhiteKeyNoteMarker = props.whiteKeyNoteMarker !== undefined ? props.whiteKeyNoteMarker : globalWhiteKeyNoteMarker;
@@ -30,9 +30,9 @@ const WhiteKey = (props) => {
   const darkerWhiteKeyColor = darken(0.6, defaultWhiteKeyColor);
   const darkerWhiteKeyColorPressed = darken(0.6, defaultWhiteKeyColorPressed);
 
-  // Check if the current key is pressed based on the noteActivity data
-  const isPressed = noteActivity.some(activeKey =>
-    activeKey.note === props.noteOctave && activeKey.isActive
+  // Determine if the key is active (isPressed or example mode)
+  const isPressed = props.isExampleOn || noteActivity.some(
+    (activeKey) => activeKey.note === props.noteOctave && activeKey.isActive
   );
 
   // Apply the styles based on whether the key is pressed or not

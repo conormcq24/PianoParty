@@ -1,17 +1,18 @@
 .black-key-space {
     display: flex;
-    width: 14.2857%;
+    width: 1.923%;
     height: 100%;  /* Full height of the key group */
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     box-sizing: border-box;
     border-top: solid;
     border-top-style: solid;
     border-width: 2px;
+    position: relative;
 }
 .black-key{
-    width: 60%;
-    height: 100%;
+    width: 70%;
+    height: 65%;
     writing-mode: vertical-rl;
     text-orientation: upright;
     color: white;
@@ -20,4 +21,7 @@
     align-items: center;
     font-size: 12px;
     padding-bottom: 12px;
+}
+.black-key-space.hidden{
+    visibility: hidden;
 }

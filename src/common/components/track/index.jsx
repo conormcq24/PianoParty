@@ -1,7 +1,7 @@
 import React from 'react';
 import './style/styles.css';
 
-const Track = () => {
+const Track = (props) => {
   return (
     <div className="track">
     </div>

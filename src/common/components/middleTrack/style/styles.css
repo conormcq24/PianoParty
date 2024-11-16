@@ -1,0 +1,19 @@
+.middle-track {
+    display: flex;
+    justify-content: center;
+    width: 1.923%;  /* Each track takes up 1.923% of the width (1/52) */
+    height: 100%;  /* Full height relative to the parent container */
+}
+
+.middle-track-lane {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 100%;
+    font-size: 0.8rem;
+}
+
+.middle-track.hidden {
+    visibility: hidden;  /* Hide the track, but it will still occupy space */
+}

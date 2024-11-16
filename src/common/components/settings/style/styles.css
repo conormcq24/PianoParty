@@ -65,6 +65,7 @@
     height: 250px;
     width: 80%;
     border-radius: 20px;
+    margin: 20px;
 }
 .settings-group-header{
     height: 15%;
@@ -182,9 +183,12 @@
 
 .apply-button-box {
     width: 80%;
-    margin-top: 10px;
-    margin-bottom: 10px;
     height: 60px;
+    display: flex;
+    align-items:center;
+}
+.apply-button-box:last-child{
+    margin-bottom: 200px;
 }
 
 .apply-button {

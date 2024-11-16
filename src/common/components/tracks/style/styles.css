@@ -1,7 +1,27 @@
-.tracks{
+.track-container {
+    position: relative; /* Container for relative positioning */
     width: 100%;
-    height: 70%;
+    height: 70%; /* Adjust this to the height you need */
+}
+
+.tracks {
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
-    box-sizing: border-box;  /* Include padding and borders in element's width/height */
+    box-sizing: border-box; /* Include padding and borders in element's width/height */
+    position: absolute; /* Position the white tracks absolutely within the container */
+    z-index: 1; /* Lower layer */
+}
+
+.middle-tracks {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0.9615%;
+    z-index: 2; /* Higher layer so it appears on top of white tracks */
+    color: red;
 }

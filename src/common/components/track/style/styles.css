@@ -1,17 +1,15 @@
 .track {
     display: flex;
-    width: 1.92307692308%;  /* Each track takes up 1.923% of the width (1/52) */
+    width: 1.923%;  /* Each track takes up 1.923% of the width (1/52) */
     height: 100%;  /* Full height relative to the parent container */
     border-top: none;
     border-bottom: none;  /* Remove bottom border */
     border-left: none;  /* Remove left border */
     border-right: 2px dashed gray;  /* Solid black border on the right */
 }
-
 .track:nth-child(odd) {
     background-color: rgba(0, 0, 0, 0.1);  /* Corrected syntax: no space between 'rgba' and '(' */
 }
-
 .track:last-child{
     border-right: none;  /* Solid black border on the right */
 }
