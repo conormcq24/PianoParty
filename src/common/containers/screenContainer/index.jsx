@@ -1,107 +1,168 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { WebMidi } from 'webmidi';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { playSound, stopSound } from '../../context/noteActivityContext/util/soundHandler.js';
-
-/* components */
+/* Components */
 import Navbar from '../../components/navbar/index';
 import Screen from '../../components/screen/index';
 import Controls from '../../components/controls/index';
 import Settings from '../../components/settings/index';
 import MusicScreen from '../../components/musicScreen/index';
-
 /* Context */
 import { NoteActivityContext } from '../../context/noteActivityContext/noteActivityContext';
 import { ControlContext } from '../../context/controlContext/controlContext';
-
+/* Styles */
 import './style/styles.css';
+import noteActivityData from '../../context/noteActivityContext/util/noteActivityData.js';
+
 
 const ScreenContainer = (props) => {
   /* Access noteActivity and setNoteActivity from the NoteActivityContext */
   const { noteActivity, setNoteActivity } = useContext(NoteActivityContext);
   /* Access control context */
   const { pianoConnected, setPianoConnected, mute } = useContext(ControlContext);
+  /* Tracks input devices that already have listeners attached */
+  const attachedListeners = useRef(new Set());
+  /* Use a ref to track the latest value of mute without causing re-renders */
+  const muteRef = useRef(mute);
 
+  /* use effect for mute */
   useEffect(() => {
+    /* Update the ref to keep track of the latest value of mute */
+    muteRef.current = mute;
+  }, [mute]);
+
+  /* use effect for piano status */
+  useEffect(() => {
+    /* declare blank cleanup */
+    let cleanup = null;
+
+    const handleMidiStateChange = (event) => {
+      /* listen for connecting and disconnecting midi devices */
+      if (event.port.state === "connected") {
+        console.log("MIDI device connected: ", event.port.name);
+        setPianoConnected(true); // Update the state when a device is connected
+      } else if (event.port.state === "disconnected") {
+        console.log("MIDI device disconnected: ", event.port.name);
+        setPianoConnected(false); // Update the state when a device is disconnected
+      }
+    };
+
     if (navigator.requestMIDIAccess) {
-      WebMidi.enable((err) => {
-        if (err) {
-          console.error("WebMidi could not be enabled.", err);
+      navigator.requestMIDIAccess().then((midiAccess) => {
+        /* if access is granted follow this path */
+        midiAccess.onstatechange = handleMidiStateChange;
+
+        /* control piano connection indicator */
+        const inputs = Array.from(midiAccess.inputs.values());
+        if (inputs.length > 0) {
+          setPianoConnected(true); // Set pianoConnected if devices are present
         } else {
-          console.log("Connected MIDI devices:", WebMidi.inputs);
-
-          // Set initial state based on connected MIDI devices
-          setPianoConnected(WebMidi.inputs.length > 0);
-
-          WebMidi.inputs.forEach((input) => {
-            // Remove existing listeners before adding new ones to avoid duplicates
-            input.removeListener('noteon', "all");
-            input.removeListener('noteoff', "all");
-
-            // Add listeners for key presses and releases
-            input.addListener('noteon', "all", (e) => {
-              const noteName = `${e.note.name}${e.note.accidental || ""}${e.note.octave}`;
-              const noteData = noteActivity.find((note) => note.note === noteName);
-              if (noteData) {
-                setNoteActivity((prevActivity) =>
-                  prevActivity.map((noteObj) =>
-                    noteObj.note === noteName ? { ...noteObj, isActive: true } : noteObj
-                  )
-                );
-
-                if (!mute) {
-                  playSound(noteName, true, noteData.frequency, mute);
-                  console.log("MUTE IS OFF IN SCREENCONTAINER: PLAY NOTE");
-                } else {
-                  console.log("MUTE IS ON IN SCREENCONTAINER: DONT PLAY NOTE");
-                }
-              }
-            });
-
-            input.addListener('noteoff', "all", (e) => {
-              const noteName = `${e.note.name}${e.note.accidental || ""}${e.note.octave}`;
-              setNoteActivity((prevActivity) =>
-                prevActivity.map((noteObj) =>
-                  noteObj.note === noteName ? { ...noteObj, isActive: false } : noteObj
-                )
-              );
-              stopSound(noteName); // Stop the sound when the note is released
-            });
-          });
-
-          // Listen for connections and disconnections
-          WebMidi.addListener('connected', (e) => {
-            console.log("MIDI device connected:", e.port.name);
-            setPianoConnected(true);
-          });
-
-          WebMidi.addListener('disconnected', (e) => {
-            console.log("MIDI device disconnected:", e.port.name);
-            setPianoConnected(false);
-          });
+          setPianoConnected(false); // Set it to false if no devices are found
         }
+
+        /* function to remove listeners */
+        cleanup = () => {
+          midiAccess.onstatechange = null;
+        };
+      }).catch((error) => {
+        console.error("MIDI access failed", error);
       });
-
-      // Set up a periodic check every 5 seconds
-      const interval = setInterval(() => {
-        const hasMidiDevice = WebMidi.inputs.length > 0;
-        if (hasMidiDevice !== pianoConnected) {
-          setPianoConnected(hasMidiDevice);
-        }
-      }, 5000); // Check every 5 seconds
-
-      // Cleanup the interval when the component unmounts
-      return () => {
-        clearInterval(interval);
-        WebMidi.inputs.forEach((input) => {
-          input.removeListener('noteon', "all");
-          input.removeListener('noteoff', "all");
-        });
-      };
-    } else {
-      console.error("WebMidi is not supported on this browser.");
     }
-  }, [pianoConnected, noteActivity, setNoteActivity, mute]);
 
+    /* run cleanup on unmount */
+    return () => {
+      if (cleanup) cleanup();
+    };
+  }, [setPianoConnected]);
+
+  /* use effect for note handler */
+  useEffect(() => {
+    /* declare a blank cleanup variable */
+    let cleanup = null;
+
+    if (navigator.requestMIDIAccess) {
+      navigator.requestMIDIAccess().then((midiAccess) => {
+        /* this logic happens if access is granted */
+
+        /* Convert the collection of input devices into an array */
+        const inputs = Array.from(midiAccess.inputs.values());
+
+        /* for each input device */
+        inputs.forEach((input) => {
+          /* Check if a listener is already attached to this input device by its ID */
+          if (!attachedListeners.current.has(input.id)) {
+
+            /* Attach a listener for MIDI messages if not already attached */
+            input.onmidimessage = (message) => {
+              const [status, noteNumber] = message.data;
+              const keyOn = 144;
+              if (status === keyOn) {
+                handleKeyPress(noteNumber);
+              } else {
+                handleKeyRelease(noteNumber);
+              }
+            };
+
+            /* Add the input device ID to the set of attached listeners */
+            attachedListeners.current.add(input.id);
+          }
+        });
+
+        /* Detach MIDI message listeners and clear the set of attached listeners */
+        cleanup = () => {
+          inputs.forEach((input) => {
+            input.onmidimessage = null;
+          });
+          /* clear all ids from attachedListeners */
+          attachedListeners.current.clear();
+        };
+      }).catch((error) => {
+        console.error("MIDI access failed", error);
+      });
+    }
+
+    /* Run cleanup to remove listeners when the component unmounts or dependencies change */
+    return () => {
+      if (cleanup) cleanup();
+    };
+  }, []);
+
+  const handleKeyPress = (noteNumber) => {
+    console.log("PRESSED ", noteNumber);
+    const noteData = noteActivityData.find(note => note.noteNum === noteNumber);
+
+    if (noteData) {
+      if (muteRef.current) {
+        setNoteActivity(prevNoteActivity =>
+          prevNoteActivity.map(note =>
+            note.noteNum === noteNumber ? { ...note, isActive: true } : note
+          )
+        );
+      } else {
+        const { note, frequency } = noteData;
+        const isActive = true;
+        playSound(note, isActive, frequency, muteRef.current);
+        setNoteActivity(prevNoteActivity =>
+          prevNoteActivity.map(note =>
+            note.noteNum === noteNumber ? { ...note, isActive: true } : note
+          )
+        );
+      }
+    }
+  };
+
+  const handleKeyRelease = (noteNumber) => {
+    const noteData = noteActivityData.find(note => note.noteNum === noteNumber);
+
+    if (noteData) {
+      const { note } = noteData;
+      stopSound(note);
+      setNoteActivity(prevNoteActivity =>
+        prevNoteActivity.map(note =>
+          note.noteNum === noteNumber ? { ...note, isActive: false } : note
+        )
+      );
+    }
+  };
 
   return (
     <>
