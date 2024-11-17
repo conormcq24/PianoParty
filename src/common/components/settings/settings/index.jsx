@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SettingsContext } from '../../context/settingsContext/settingsContext';
+import { SettingsContext } from '../../../context/settingsContext/settingsContext';
 import VisualPref from '../visualPref/index';
 import AudioPref from '../audioPref/index';
 import VideoPref from '../videoPref/index';

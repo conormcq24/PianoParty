@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { playSound, stopSound } from '../../context/noteActivityContext/util/soundHandler.js';
 /* Components */
-import Navbar from '../../components/navbar/index';
+import Navbar from '../../components/bars/navbar/index';
 import Screen from '../../components/screen/index';
-import Controls from '../../components/controls/index';
-import Settings from '../../components/settings/index';
-import MusicScreen from '../../components/musicScreen/index';
+import Controls from '../../components/bars/controls/index';
+import Settings from '../../components/settings/settings/index';
+import MusicScreen from '../../components/miscScreens/musicScreen/index';
 /* Context */
 import { NoteActivityContext } from '../../context/noteActivityContext/noteActivityContext';
 import { ControlContext } from '../../context/controlContext/controlContext';
-/* Styles */
-import './style/styles.css';
 import noteActivityData from '../../context/noteActivityContext/util/noteActivityData.js';
 
 
-const ScreenContainer = (props) => {
+const PianoPartyScreen = (props) => {
   /* Access noteActivity and setNoteActivity from the NoteActivityContext */
   const { noteActivity, setNoteActivity } = useContext(NoteActivityContext);
   /* Access control context */
@@ -174,4 +172,4 @@ const ScreenContainer = (props) => {
   );
 };
 
-export default ScreenContainer;
+export default PianoPartyScreen;

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SettingsContext } from '../../context/settingsContext/settingsContext';
+import { SettingsContext } from '../../../context/settingsContext/settingsContext';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import './style/styles.css';
 

@@ -5,9 +5,6 @@
     justify-content: center;
     align-items: flex-start;
     box-sizing: border-box;
-    border-top: solid;
-    border-top-style: solid;
-    border-width: 2px;
     position: relative;
 }
 .black-key{
@@ -21,6 +18,7 @@
     align-items: center;
     font-size: 12px;
     padding-bottom: 12px;
+    border: 2px black solid;
 }
 .black-key-space.hidden{
     visibility: hidden;

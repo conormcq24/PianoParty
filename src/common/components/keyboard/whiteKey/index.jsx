@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { darken } from 'polished';
-import { SettingsContext } from '../../context/settingsContext/settingsContext';
-import { NoteActivityContext } from '../../context/noteActivityContext/noteActivityContext';
+import { SettingsContext } from '../../../context/settingsContext/settingsContext';
+import { NoteActivityContext } from '../../../context/noteActivityContext/noteActivityContext';
 import './style/styles.css';
 
 const WhiteKey = (props) => {
@@ -48,6 +48,12 @@ const WhiteKey = (props) => {
         ? `linear-gradient(220deg, ${darkerWhiteKeyColorPressed} 1%, ${defaultWhiteKeyColorPressed} 99%)`
         : defaultWhiteKeyColorPressed,
     };
+  }
+
+  // Check if the whiteKeySquare prop is true and apply width and height
+  if (props.whiteKeySquare) {
+    keyStyle.width = '20px';
+    keyStyle.height = '80px';
   }
 
   return (

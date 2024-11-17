@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { SettingsProvider } from './common/context/settingsContext/settingsContext';
 import { NoteActivityProvider } from './common/context/noteActivityContext/noteActivityContext'
 import { ControlProvider } from './common/context/controlContext/controlContext'
-import ScreenContainer from './common/containers/screenContainer/index';
+import PianoPartyScreen from './common/modes/pianoPartyScreen/index';
 import './App.css'
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <SettingsProvider>
             <NoteActivityProvider>
                 <ControlProvider>
-                    <ScreenContainer />
+                    <PianoPartyScreen />
                 </ControlProvider>
             </NoteActivityProvider>
         </SettingsProvider >

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { HexColorPicker } from "react-colorful";
-import WhiteKey from "../whiteKey/index";
-import BlackKey from "../blackKey/index";
-import { SettingsContext } from "../../context/settingsContext/settingsContext";
+import WhiteKey from "../../keyboard/whiteKey/index";
+import BlackKey from "../../keyboard/blackKey/index";
+import { SettingsContext } from "../../../context/settingsContext/settingsContext";
 import "./style/styles.css";
 
 const VisualPref = (props) => {
@@ -135,6 +135,7 @@ const VisualPref = (props) => {
                                 whiteKeyShadow={whiteKeyShadow}
                                 whiteKeyNoteMarker={whiteKeyNoteMarker}
                                 whiteKeyColor={colors.whiteOff} // Local state
+                                whiteKeySquare={true}
                             />
                             <WhiteKey
                                 noteOctave={"A1"}
@@ -142,6 +143,7 @@ const VisualPref = (props) => {
                                 whiteKeyNoteMarker={whiteKeyNoteMarker}
                                 whiteKeyColorPressed={colors.whiteOn} // Local state
                                 isExampleOn={true}
+                                whiteKeySquare={true}
                             />
                         </div>
                     </div>
@@ -246,6 +248,7 @@ const VisualPref = (props) => {
                                 blackKeyShadow={blackKeyShadow}
                                 blackKeyNoteMarker={blackKeyNoteMarker}
                                 blackKeyColor={colors.blackOff} // Local state
+                                blackKeySquare={true}
                             />
                             <BlackKey
                                 noteOctave={"C#1"}
@@ -253,6 +256,7 @@ const VisualPref = (props) => {
                                 blackKeyNoteMarker={blackKeyNoteMarker}
                                 blackKeyColorPressed={colors.blackOn} // Local state
                                 isExampleOn={true}
+                                blackKeySquare={true}
                             />
                         </div>
                     </div>

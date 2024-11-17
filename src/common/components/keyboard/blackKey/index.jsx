@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { SettingsContext } from '../../context/settingsContext/settingsContext';
-import { NoteActivityContext } from '../../context/noteActivityContext/noteActivityContext';
+import { SettingsContext } from '../../../context/settingsContext/settingsContext';
+import { NoteActivityContext } from '../../../context/noteActivityContext/noteActivityContext';
 import { darken } from 'polished';
 import { mix } from 'polished';
 
@@ -53,9 +53,16 @@ const BlackKey = (props) => {
           : defaultBlackKeyColorPressed,
     };
   }
+    let keyContainerStyle = {};
+    if (props.blackKeySquare) {
+      keyContainerStyle.width = '20px';
+      keyContainerStyle.height = '80px';
+      keyStyle.width = '100%';
+      keyStyle.height = '100%';
+    }
 
   return (
-    <div className={`black-key-space ${shouldHide ? 'hidden' : ''}`}>
+    <div className={`black-key-space ${shouldHide ? 'hidden' : ''}`} style={keyContainerStyle}>
         <div className="black-key" style={keyStyle}>
             {defaultBlackKeyNoteMarker && props.noteOctave}
         </div>

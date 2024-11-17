@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
-import VideoSlider from '../videoSlider/index';
+import VideoSlider from '../../misc/videoSlider/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToggleOn, faToggleOff, faFilm, faBackwardStep, faPlay, faForwardStep } from '@fortawesome/free-solid-svg-icons';
 import { faPiano, faRecordVinyl, faMusicMagnifyingGlass, faVolume } from  '@fortawesome/pro-solid-svg-icons';
-import { ControlContext } from '../../context/controlContext/controlContext';
+import { ControlContext } from '../../../context/controlContext/controlContext';
 import './style/styles.css';
 
 
 
 const Controls = (props) => {
+
+    /* TODO: refactor control bar so that it has a specific bar for each game mode */
 
     /* Access isPianoConnected with controlContext */
     const { pianoConnected, toggleMute, mute } = useContext(ControlContext);
