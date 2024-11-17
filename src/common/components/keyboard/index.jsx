@@ -40,12 +40,12 @@ const Keyboard = (props) => {
     <div className="keyboard">
         <div className="white-key-grouping">
             {Array.from({ length: keyCount }).map((_, index) => (
-                <WhiteKey noteOctave={getWhiteNote(index)}/>
+                <WhiteKey key={index} noteOctave={getWhiteNote(index)}/>
             ))}
         </div>
         <div className="black-key-grouping">
             {Array.from({ length: keyCount }).map((_, index) => (
-                <BlackKey noteOctave={getBlackNote(index)}/>
+                <BlackKey key={index} noteOctave={getBlackNote(index)}/>
             ))}
         </div>
     </div>

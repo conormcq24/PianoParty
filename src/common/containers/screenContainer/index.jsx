@@ -127,7 +127,6 @@ const ScreenContainer = (props) => {
   }, []);
 
   const handleKeyPress = (noteNumber) => {
-    console.log("PRESSED ", noteNumber);
     const noteData = noteActivityData.find(note => note.noteNum === noteNumber);
 
     if (noteData) {

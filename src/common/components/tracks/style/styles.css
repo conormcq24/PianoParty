@@ -1,9 +1,10 @@
-.track-container {
-    position: relative; /* Container for relative positioning */
+.tracks-container {
+    position: relative;
     width: 100%;
     height: 70%; /* Adjust this to the height you need */
+    overflow: hidden; /* Hide the scrollbar */
+    background-color: white;
 }
-
 .tracks {
     width: 100%;
     height: 100%;
@@ -11,9 +12,8 @@
     justify-content: center;
     box-sizing: border-box; /* Include padding and borders in element's width/height */
     position: absolute; /* Position the white tracks absolutely within the container */
-    z-index: 1; /* Lower layer */
+    z-index: 2; /* Lower layer */
 }
-
 .middle-tracks {
     width: 100%;
     height: 100%;
@@ -22,6 +22,24 @@
     position: absolute;
     top: 0;
     left: 0.9615%;
-    z-index: 2; /* Higher layer so it appears on top of white tracks */
+    z-index: 3; /* Higher layer so it appears on top of white tracks */
     color: red;
 }
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Above tracks and middle-tracks */
+    background: repeating-linear-gradient(
+        90deg,                      /* Horizontal stripes */
+        rgba(255, 255, 255, 0.5),   /* Start with semi-transparent white */
+        rgba(255, 255, 255, 0.5) 1.923%, /* End of the white stripe */
+        rgba(0, 0, 0, 0.1) 1.923%,  /* Start of black stripe */
+        rgba(0, 0, 0, 0.1) 3.846%   /* End of black stripe */
+    );
+    opacity: 0.8; /* Slight transparency */
+    pointer-events: none; /* Allow interactions to pass through */
+}
+

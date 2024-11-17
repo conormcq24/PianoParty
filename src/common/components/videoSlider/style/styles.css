@@ -22,8 +22,8 @@
 .start-bar, .end-bar {
   position: absolute;
   width: 4px;
-  height: 20px;
-  margin-top: -7.5px;
+  height: 12px;
+  margin-top: -4px;
   background-color: goldenrod;
   cursor: pointer;
   border-radius: 25px;
